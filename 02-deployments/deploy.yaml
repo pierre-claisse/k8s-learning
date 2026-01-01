@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: mon-super-site
 spec:
-  replicas: 5
+  replicas: 3
   selector:
     matchLabels:
       app: nginx
@@ -17,3 +17,18 @@ spec:
         image: nginx:1.21
         ports:
         - containerPort: 80
+        env:
+          # kubectl create secret generic mon-secret-admin --from-literal=password=SuperMotDePasse123
+          # kubectl get secret mon-secret-admin -o yaml
+          - name: PASSWORD_ADMIN
+            valueFrom:
+              secretKeyRef:
+                name: mon-secret-admin
+                key: password
+        volumeMounts:
+        - name: html-volume
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html-volume
+        configMap:
+          name: ma-config-html
