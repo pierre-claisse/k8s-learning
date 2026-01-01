@@ -28,7 +28,12 @@ spec:
         volumeMounts:
         - name: html-volume
           mountPath: /usr/share/nginx/html
+        - name: data-persistant
+          mountPath: /var/donnees
       volumes:
       - name: html-volume
         configMap:
           name: ma-config-html
+      - name: data-persistant
+        persistentVolumeClaim:
+          claimName: mon-ticket-stockage
