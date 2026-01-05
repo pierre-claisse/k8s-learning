@@ -1,0 +1,25 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: stagiaire-role
+rules:
+- apiGroups: [""] # "" indique le coeur de l'API (Pods, Services, etc.)
+  resources: ["pods", "services"]
+  verbs: ["get", "list", "watch"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: bob-est-stagiaire
+  namespace: default
+subjects:
+- kind: User
+  name: bob # C'est le "CN" qu'on a mis dans la commande OpenSSL
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: stagiaire-role
+  apiGroup: rbac.authorization.k8s.io
