@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: mon-super-site
 spec:
-  replicas: 3 # overriden by minReplicas: 1 in hpa.yaml
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: nginx
@@ -28,19 +28,17 @@ spec:
         effect: "NoSchedule"
       containers:
       - name: nginx
-        image: nginx:1.21
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         ports:
         - containerPort: 80
         resources:
           requests:
-            cpu: 25m     # 2.5% (milli-cores)
+            cpu: 25m
             memory: 128Mi
           limits:
-            cpu: 500m     # 50%
+            cpu: 500m
             memory: 256Mi
         env:
-          # kubectl create secret generic mon-secret-admin --from-literal=password=SuperMotDePasse123
-          # kubectl get secret mon-secret-admin -o yaml
           - name: PASSWORD_ADMIN
             valueFrom:
               secretKeyRef:
