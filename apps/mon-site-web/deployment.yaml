@@ -17,6 +17,13 @@ spec:
         image: nginx:1.21
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            cpu: 25m     # 2.5% (milli-cores)
+            memory: 128Mi
+          limits:
+            cpu: 500m     # 50%
+            memory: 256Mi
         env:
           # kubectl create secret generic mon-secret-admin --from-literal=password=SuperMotDePasse123
           # kubectl get secret mon-secret-admin -o yaml
