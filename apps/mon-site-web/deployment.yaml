@@ -12,6 +12,21 @@ spec:
       labels:
         app: nginx
     spec:
+      spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: disk
+                operator: In
+                values:
+                - ssd
+      tolerations:
+      - key: "statut"
+        operator: "Equal"
+        value: "maintenance"
+        effect: "NoSchedule"
       containers:
       - name: nginx
         image: nginx:1.21
